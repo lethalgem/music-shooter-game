@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c7widt1lw44j6"]
+[gd_scene load_steps=27 format=3 uid="uid://c7widt1lw44j6"]
 
 [ext_resource type="Material" uid="uid://b4gwd5h7ixvct" path="res://materials/player.tres" id="1_31uqo"]
 [ext_resource type="Script" path="res://controllers/scripts/my_fps_controller.gd" id="1_b0yeg"]
@@ -12,6 +12,9 @@
 [ext_resource type="Script" path="res://controllers/CrouchingPlayerState.gd" id="10_8nyym"]
 [ext_resource type="Script" path="res://controllers/SlidingPlayerState.gd" id="11_hrvf0"]
 [ext_resource type="Script" path="res://controllers/JumpingPlayerState.gd" id="12_4f8xh"]
+[ext_resource type="Script" path="res://controllers/TrackManager.gd" id="13_7sdke"]
+[ext_resource type="AudioStream" uid="uid://bdhte3qlxe4e" path="res://sounds/songs/Polyphia  40oz (Official Music Video).mp3" id="14_o2t3l"]
+[ext_resource type="AudioStream" uid="uid://dlg2koa1xddr1" path="res://sounds/songs/Polyphia  40oz  Guitar Backing Track-synced.wav" id="15_dgpum"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6y6ct"]
 
@@ -589,5 +592,16 @@ script = ExtResource("11_hrvf0")
 
 [node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("12_4f8xh")
+
+[node name="TrackManager" type="Node" parent="." node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
+script = ExtResource("13_7sdke")
+FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
+BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
+
+[node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
+stream = ExtResource("14_o2t3l")
+
+[node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
+stream = ExtResource("15_dgpum")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
