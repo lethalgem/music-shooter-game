@@ -587,6 +587,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 210.0
 offset_bottom = 50.0
+mouse_filter = 1
 theme = ExtResource("4_ov56a")
 script = ExtResource("5_nco27")
 

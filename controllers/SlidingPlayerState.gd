@@ -20,7 +20,6 @@ func enter(previous_state) -> void:
 
 func update(delta):
 	PLAYER.update_gravity(delta)
-	#PLAYER.update_input(SPEED, ACCELERATION, DECELERATION)  # disable to maintain direction while sliding
 	PLAYER.update_velocity()
 
 
