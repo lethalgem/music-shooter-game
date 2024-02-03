@@ -23,7 +23,7 @@ func update(delta):
 
 	set_animation_speed(PLAYER.velocity.length())
 
-	if Input.is_action_just_pressed("sprint") and PLAYER.is_on_floor():
+	if Input.is_action_pressed("sprint") and PLAYER.is_on_floor():
 		transition.emit("SprintingPlayerState")
 
 	if Input.is_action_just_pressed("crouch") and PLAYER.is_on_floor():
