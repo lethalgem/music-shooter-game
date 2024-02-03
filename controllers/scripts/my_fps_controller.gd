@@ -8,8 +8,14 @@ class_name Player extends CharacterBody3D
 @export var CAMERA_CONTROLLER: Camera3D
 @export var ANIMATIONPLAYER: AnimationPlayer
 @export var CROUCH_SHAPECAST: Node3D
+@export var WEAPON_HOLDER: Node3D
+@export var WEAPON_SWAY_AMOUNT: float = 5
+@export var WEAPON_TILT_AMOUNT: float = 1
+@export var INVERT_WEAPON_SWAY: bool = false
+@export var CAM_TILT_AMOUNT: float = 1
 
 var _mouse_input: bool = false
+var mouse_input: Vector2
 var _mouse_rotation: Vector3
 var _rotation_input: float
 var _tilt_input: float
@@ -18,6 +24,7 @@ var _camera_rotation: Vector3
 var _current_rotation: float
 
 var gravity = 12.0
+var def_weapon_holder_pos: Vector3
 
 
 func _input(event):
@@ -33,6 +40,8 @@ func _ready():
 	# add crouch check shapecast collision exception for CharacterBody3D node
 	CROUCH_SHAPECAST.add_exception($".")
 
+	def_weapon_holder_pos = WEAPON_HOLDER.position
+
 
 func _unhandled_input(event):
 	_mouse_input = (
@@ -41,6 +50,7 @@ func _unhandled_input(event):
 	if _mouse_input:
 		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
 		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
+		mouse_input = event.relative
 
 
 func _update_camera(delta):
@@ -67,6 +77,12 @@ func _physics_process(delta):
 
 	_update_camera(delta)
 
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	cam_tilt(input_dir.x, delta)
+	weapon_tilt(input_dir.x, delta)
+	weapon_sway(delta)
+	weapon_bob(velocity.length(), delta)
+
 
 func update_gravity(delta):
 	velocity.y -= gravity * delta
@@ -87,3 +103,56 @@ func update_input(speed: float, acceleration: float, deceleration: float):
 
 func update_velocity():
 	move_and_slide()
+
+
+func cam_tilt(input_x, delta):
+	if CAMERA_CONTROLLER:
+		CAMERA_CONTROLLER.rotation.z = lerp(
+			CAMERA_CONTROLLER.rotation.z, -input_x * CAM_TILT_AMOUNT, 10 * delta
+		)
+
+
+func weapon_tilt(input_x, delta):
+	if WEAPON_HOLDER:
+		WEAPON_HOLDER.rotation.x = lerp(
+			WEAPON_HOLDER.rotation.x, -input_x * WEAPON_TILT_AMOUNT * 10, 10 * delta
+		)
+
+
+func weapon_sway(delta):
+	mouse_input = lerp(mouse_input, Vector2.ZERO, 10 * delta)
+	WEAPON_HOLDER.rotation.z = lerp(
+		WEAPON_HOLDER.rotation.z,
+		mouse_input.y * WEAPON_TILT_AMOUNT * (-1 if INVERT_WEAPON_SWAY else 1),
+		10 * delta
+	)
+
+	WEAPON_HOLDER.rotation.y = lerp(
+		WEAPON_HOLDER.rotation.y,
+		mouse_input.x * WEAPON_TILT_AMOUNT * (-1 if INVERT_WEAPON_SWAY else 1) + deg_to_rad(-90),
+		10 * delta
+	)
+
+
+func weapon_bob(vel: float, delta):
+	if WEAPON_HOLDER:
+		if vel > 0:
+			var bob_amount: float = 0.01
+			var bob_freq: float = 0.01
+			WEAPON_HOLDER.position.y = lerp(
+				WEAPON_HOLDER.position.y,
+				def_weapon_holder_pos.y + sin(Time.get_ticks_msec() * bob_freq) * bob_amount,
+				10 * delta
+			)
+			WEAPON_HOLDER.position.x = lerp(
+				WEAPON_HOLDER.position.x,
+				def_weapon_holder_pos.x + sin(Time.get_ticks_msec() * bob_freq * 0.05) * bob_amount,
+				10 * delta
+			)
+		else:
+			WEAPON_HOLDER.position.y = lerp(
+				WEAPON_HOLDER.position.y, def_weapon_holder_pos.y, 10 * delta
+			)
+			WEAPON_HOLDER.position.x = lerp(
+				WEAPON_HOLDER.position.x, def_weapon_holder_pos.x, 10 * delta
+			)
