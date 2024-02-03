@@ -22,6 +22,7 @@ var _tilt_input: float
 var _player_rotation: Vector3
 var _camera_rotation: Vector3
 var _current_rotation: float
+var previous_vel: float = 0.0
 
 var gravity = 12.0
 var def_weapon_holder_pos: Vector3
@@ -136,23 +137,24 @@ func weapon_sway(delta):
 
 func weapon_bob(vel: float, delta):
 	if WEAPON_HOLDER:
-		if vel > 0:
-			var bob_amount: float = 0.01
-			var bob_freq: float = 0.01
-			WEAPON_HOLDER.position.y = lerp(
-				WEAPON_HOLDER.position.y,
-				def_weapon_holder_pos.y + sin(Time.get_ticks_msec() * bob_freq) * bob_amount,
-				10 * delta
-			)
-			WEAPON_HOLDER.position.x = lerp(
-				WEAPON_HOLDER.position.x,
-				def_weapon_holder_pos.x + sin(Time.get_ticks_msec() * bob_freq * 0.05) * bob_amount,
-				10 * delta
-			)
-		else:
-			WEAPON_HOLDER.position.y = lerp(
-				WEAPON_HOLDER.position.y, def_weapon_holder_pos.y, 10 * delta
-			)
-			WEAPON_HOLDER.position.x = lerp(
-				WEAPON_HOLDER.position.x, def_weapon_holder_pos.x, 10 * delta
-			)
+		var bob_amount: float = 0.01
+
+		# Smooth the velocity change
+		var smoothed_vel: float = lerp(previous_vel, vel, 0.01)
+		previous_vel = smoothed_vel
+
+		# Scale the bob frequency based on smoothed velocity
+		var velocity_scaling: float = 0.002  # Adjust this scaling factor based on your game's visual preferences
+		var bob_freq: float = abs(smoothed_vel) * velocity_scaling
+
+		# Apply weapon bobs
+		WEAPON_HOLDER.position.y = lerp(
+			WEAPON_HOLDER.position.y,
+			def_weapon_holder_pos.y + sin(Time.get_ticks_msec() * bob_freq) * bob_amount,
+			10 * delta
+		)
+		WEAPON_HOLDER.position.x = lerp(
+			WEAPON_HOLDER.position.x,
+			def_weapon_holder_pos.x + sin(Time.get_ticks_msec() * bob_freq * 0.05) * bob_amount,
+			10 * delta
+		)
