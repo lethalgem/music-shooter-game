@@ -16,16 +16,21 @@ func _process(delta):
 	Global.debug.add_property("Tempo", "%.2f" % tempo, 2)
 	# velocity can be between 0 and 7.0 right now
 	var velocity = Global.player.velocity.length()
-	var rate_of_tempo
-	if velocity == 7:
-		rate_of_tempo = .15
+	#var rate_of_tempo
+	#if velocity == 7:
+	#rate_of_tempo = .15
+	#else:
+	#rate_of_tempo = 1.2 / velocity
+	#if velocity == 0:
+	#tempo = (velocity + 1) * 0.35
+	#else:
+	#tempo = (velocity + 1) * rate_of_tempo
+	if velocity < 3:
+		tempo = 0.35
+	elif velocity >= 5:
+		tempo = 0.1 * velocity + 0.5
 	else:
-		rate_of_tempo = 1.2 / velocity
-	if velocity == 0:
-		tempo = (velocity + 1) * 0.35
-	else:
-		tempo = (velocity + 1) * rate_of_tempo
-	#tempo = 0.12143 * velocity + 0.35
+		tempo = 1
 	FRONT_TRACK_STREAM_PLAYER.pitch_scale = tempo
 	BACKING_TRACK_STREAM_PLAYER.pitch_scale = tempo
 
