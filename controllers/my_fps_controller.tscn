@@ -528,7 +528,7 @@ update_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, -1.566, -4.1633e-12)
 
 [node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder" node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("7_j4hku")]
-transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.415, 1.065, -0.765)
+transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.295, 1.065, -0.765)
 script = ExtResource("4_b3v7x")
 target_object = NodePath(".")
 recoil_rotation_x = ExtResource("5_srcb8")
@@ -685,6 +685,7 @@ script = ExtResource("12_4f8xh")
 script = ExtResource("13_7sdke")
 FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
 BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
+SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
 
 [node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
 stream = ExtResource("14_o2t3l")
