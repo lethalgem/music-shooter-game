@@ -534,10 +534,10 @@ transform = Transform3D(0.28, 0, 0, 0, 0.28, 0, 0, 0, 0.28, 0, 0, 0)
 mesh = SubResource("SphereMesh_k6oi6")
 
 [node name="MuzzleFlash" type="OmniLight3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MeshInstance3D" node_paths=PackedStringArray("track_manager")]
-transform = Transform3D(8.92857, 1.73308e-22, 3.61589e-14, -2.11758e-22, 8.92857, 1.74622e-22, -3.55271e-14, -2.10444e-22, 8.92857, -0.765486, 0.237018, -0.00228143)
+transform = Transform3D(8.92857, 1.73308e-22, 3.61589e-14, -2.11758e-22, 8.92857, 1.74622e-22, -3.55271e-14, -2.10444e-22, 8.92857, -0.754417, -0.0273705, -0.0045619)
 light_color = Color(1, 0.427451, 0.0627451, 1)
 light_energy = 0.0
-light_size = 0.1
+light_size = 0.171
 shadow_enabled = true
 distance_fade_enabled = true
 omni_range = 69.333
