@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://c7widt1lw44j6"]
+[gd_scene load_steps=34 format=3 uid="uid://c7widt1lw44j6"]
 
 [ext_resource type="Script" path="res://controllers/scripts/my_fps_controller.gd" id="1_b0yeg"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="3_8ojud"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/debug.gd" id="5_nco27"]
 [ext_resource type="Curve" uid="uid://cbynyrnvrcxah" path="res://curves/recoil_curve.tres" id="5_srcb8"]
 [ext_resource type="Script" path="res://scripts/camera_shake.gd" id="6_0pynn"]
+[ext_resource type="Script" path="res://scripts/muzzle_flash.gd" id="6_6e40e"]
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="6_40erw"]
 [ext_resource type="PackedScene" uid="uid://chw0fstefrpww" path="res://weapons/lowpoly_asval/lowpoly_asval.glb" id="7_j4hku"]
 [ext_resource type="Script" path="res://controllers/IdlePlayerState.gd" id="7_xlair"]
@@ -28,6 +29,9 @@ albedo_color = Color(1, 0.0156863, 1, 1)
 material = SubResource("StandardMaterial3D_tc3nn")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_m4aob"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_k6oi6"]
+radius = 0.001
 
 [sub_resource type="Animation" id="Animation_ymvr6"]
 resource_name = "Crouching"
@@ -511,7 +515,7 @@ update_mode = 1
 [node name="WeaponHolder" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, -1.566, -4.1633e-12)
 
-[node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder" node_paths=PackedStringArray("target_object", "camera_shake") instance=ExtResource("7_j4hku")]
+[node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder" node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("7_j4hku")]
 transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.415, 1.065, -0.765)
 script = ExtResource("4_b3v7x")
 target_object = NodePath(".")
@@ -519,6 +523,25 @@ recoil_rotation_x = ExtResource("5_srcb8")
 recoil_rotation_z = ExtResource("5_srcb8")
 recoil_position_z = ExtResource("5_srcb8")
 camera_shake = NodePath("../../..")
+camera_shake_amount = 0.02
+track_manager = NodePath("../../../../TrackManager")
+
+[node name="MuzzleFlashMarker" type="Marker3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval"]
+transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.55212e-16, -4.15924e-24, 1, -2.42076, 0.427047, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker"]
+transform = Transform3D(0.28, 0, 0, 0, 0.28, 0, 0, 0, 0.28, 0, 0, 0)
+mesh = SubResource("SphereMesh_k6oi6")
+
+[node name="MuzzleFlash" type="OmniLight3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MeshInstance3D" node_paths=PackedStringArray("track_manager")]
+transform = Transform3D(8.92857, 1.73308e-22, 1.23684e-14, -2.11758e-22, 8.92857, 1.74622e-22, -1.42109e-14, -2.10444e-22, 8.92857, -0.776554, 0, 0)
+light_color = Color(1, 0.427451, 0.0627451, 1)
+light_energy = 0.0
+shadow_enabled = true
+distance_fade_enabled = true
+omni_range = 69.333
+script = ExtResource("6_6e40e")
+track_manager = NodePath("../../../../../../../TrackManager")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -9,6 +9,7 @@ extends Node3D
 @export var recoil_speed: float = 1
 @export var camera_shake: CameraShake
 @export var camera_shake_amount: float = 0.3
+@export var track_manager: TrackManager
 
 var def_pos: Vector3
 var def_rot: Vector3
@@ -22,12 +23,10 @@ func _ready():
 	def_rot = target_object.rotation
 	target_rot.y = rotation.y
 	current_time = 1
+	track_manager.connect("shoot", apply_recoil)
 
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("shoot"):
-		apply_recoil()
-
 	if current_time < 1:
 		current_time += delta * recoil_speed
 		target_object.position.z = lerp(
