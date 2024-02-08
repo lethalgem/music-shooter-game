@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://c7widt1lw44j6"]
+[gd_scene load_steps=37 format=3 uid="uid://c7widt1lw44j6"]
 
 [ext_resource type="Script" path="res://controllers/scripts/my_fps_controller.gd" id="1_b0yeg"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="3_8ojud"]
@@ -19,8 +19,10 @@
 [ext_resource type="Script" path="res://controllers/TrackManager.gd" id="13_7sdke"]
 [ext_resource type="AudioStream" uid="uid://bdhte3qlxe4e" path="res://sounds/songs/Polyphia  40oz (Official Music Video).mp3" id="14_o2t3l"]
 [ext_resource type="AudioStream" uid="uid://dlg2koa1xddr1" path="res://sounds/songs/Polyphia  40oz  Guitar Backing Track-synced.wav" id="15_dgpum"]
+[ext_resource type="Script" path="res://controllers/PronePlayerState.gd" id="17_ixpa7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6y6ct"]
+radius = 0.25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tc3nn"]
 albedo_color = Color(1, 0.0156863, 1, 1)
@@ -138,6 +140,45 @@ tracks/1/keys = {
 "values": [Vector3(2.08165e-12, 1.5, 2.08165e-12), Vector3(2.08165e-12, 1.45, 2.08165e-12), Vector3(2.08165e-12, 1.5, 2.08165e-12)]
 }
 
+[sub_resource type="Animation" id="Animation_d51ti"]
+resource_name = "Proning"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.08165e-12, 1.5, 2.08165e-12), Vector3(0, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D:shape:height")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.0]
+}
+
 [sub_resource type="Animation" id="Animation_popsw"]
 length = 0.001
 tracks/0/type = "value"
@@ -231,75 +272,75 @@ tracks/7/keys = {
 "points": PackedFloat32Array(0.066, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/8/type = "bezier"
+tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("CameraController/Camera3D:position:z")
+tracks/8/path = NodePath("CameraController/Camera3D:fov")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("CameraController:rotation:x")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/10/type = "bezier"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("CameraController/Camera3D:position:z")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "handle_modes": PackedInt32Array(0),
 "points": PackedFloat32Array(2.08165e-12, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("CameraController:rotation")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("ShapeCast3D:position")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(2.08165e-12, 1.5, 2.08165e-12)]
-}
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("PlayerStateMachine/SlidingPlayerState:SPEED")
+tracks/11/path = NodePath("CameraController:rotation")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [6.0]
+"values": [Vector3(0, 0, 0)]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("CameraController/Camera3D:fov")
+tracks/12/path = NodePath("ShapeCast3D:position")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [75.0]
+"values": [Vector3(2.08165e-12, 1.5, 2.08165e-12)]
 }
-tracks/13/type = "bezier"
+tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("CameraController:rotation:x")
+tracks/13/path = NodePath("PlayerStateMachine/SlidingPlayerState:SPEED")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.0]
 }
 
 [sub_resource type="Animation" id="Animation_0krd1"]
@@ -344,64 +385,64 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CameraController:rotation")
+tracks/3/path = NodePath("CameraController/Camera3D:fov")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 4.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [75.0, 84.0, 75.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraController:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.5, 3, 5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("ShapeCast3D:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ShapeCast3D:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(2.08165e-12, 1.5, 2.08165e-12), Vector3(2.08165e-12, 1, 2.08165e-12)]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("PlayerStateMachine/SlidingPlayerState:SPEED")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PlayerStateMachine/SlidingPlayerState:SPEED")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0.9, 5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [6.0, 4.0]
 }
-tracks/6/type = "method"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("PlayerStateMachine/SlidingPlayerState")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PlayerStateMachine/SlidingPlayerState")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
 "times": PackedFloat32Array(5),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"finish"
 }]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("CameraController/Camera3D:fov")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.3, 4.3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [75.0, 84.0, 75.0]
 }
 
 [sub_resource type="Animation" id="Animation_t0dbq"]
@@ -485,6 +526,7 @@ _data = {
 "Crouching": SubResource("Animation_ymvr6"),
 "JumpEnd": SubResource("Animation_ymmxx"),
 "JumpStart": SubResource("Animation_fj6x3"),
+"Proning": SubResource("Animation_d51ti"),
 "RESET": SubResource("Animation_popsw"),
 "Sliding": SubResource("Animation_0krd1"),
 "Sprinting": SubResource("Animation_t0dbq"),
@@ -680,6 +722,9 @@ script = ExtResource("11_hrvf0")
 
 [node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("12_4f8xh")
+
+[node name="PronePlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("17_ixpa7")
 
 [node name="TrackManager" type="Node" parent="." node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
 script = ExtResource("13_7sdke")
