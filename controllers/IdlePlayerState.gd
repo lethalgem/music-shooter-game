@@ -28,3 +28,6 @@ func update(delta):
 
 	if Input.is_action_just_pressed("jump") and PLAYER.is_on_floor():
 		transition.emit("JumpingPlayerState")
+	
+	if Input.is_action_just_pressed("prone") and PLAYER.is_on_floor():
+		transition.emit("PronePlayerState")
