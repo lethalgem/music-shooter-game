@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://q2b1t42yfg2t"]
+
+[ext_resource type="Script" path="res://controllers/TrackManager.gd" id="1_j43ns"]
+[ext_resource type="PackedScene" uid="uid://chw0fstefrpww" path="res://weapons/lowpoly_asval/lowpoly_asval.glb" id="1_khnsb"]
+[ext_resource type="AudioStream" uid="uid://bdhte3qlxe4e" path="res://sounds/songs/Polyphia  40oz (Official Music Video).mp3" id="2_3jgog"]
+[ext_resource type="Script" path="res://scripts/recoil_handler.gd" id="2_wyls2"]
+[ext_resource type="AudioStream" uid="uid://dlg2koa1xddr1" path="res://sounds/songs/Polyphia  40oz  Guitar Backing Track-synced.wav" id="3_a4kdl"]
+[ext_resource type="Curve" uid="uid://cbynyrnvrcxah" path="res://curves/recoil_curve.tres" id="3_wo71r"]
+[ext_resource type="Script" path="res://scripts/muzzle_flash.gd" id="4_b4isn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffcxd"]
+albedo_color = Color(1, 0.439216, 0.160784, 1)
+emission_enabled = true
+emission = Color(0.937255, 0.152941, 0.054902, 1)
+emission_energy_multiplier = 19.1
+subsurf_scatter_strength = 1.0
+refraction_scale = 0.25
+disable_receive_shadows = true
+
+[sub_resource type="TextMesh" id="TextMesh_ua355"]
+material = SubResource("StandardMaterial3D_ffcxd")
+text = "v"
+font_size = 127
+pixel_size = 0.0185
+
+[node name="lowpoly_asval_controller" type="Node3D"]
+
+[node name="TrackManager" type="Node" parent="." node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
+script = ExtResource("1_j43ns")
+FRONT_TRACK_STREAM_PLAYER = NodePath("")
+BACKING_TRACK_STREAM_PLAYER = NodePath("")
+SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
+
+[node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
+stream = ExtResource("2_3jgog")
+
+[node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
+stream = ExtResource("3_a4kdl")
+
+[node name="lowpoly_asval" parent="." node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("1_khnsb")]
+transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.295, 1.065, -0.765)
+script = ExtResource("2_wyls2")
+target_object = NodePath("")
+recoil_rotation_x = ExtResource("3_wo71r")
+recoil_rotation_z = ExtResource("3_wo71r")
+recoil_position_z = ExtResource("3_wo71r")
+recoil_amplitude = Vector3(1, 1, 0.2)
+camera_shake = NodePath("")
+camera_shake_amount = 0.02
+track_manager = NodePath("")
+
+[node name="MuzzleFlashMarker" type="Marker3D" parent="lowpoly_asval"]
+transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.55212e-16, -4.15924e-24, 1, -2.42076, 0.427047, 0)
+
+[node name="MuzzleFlash" type="Node3D" parent="lowpoly_asval/MuzzleFlashMarker" node_paths=PackedStringArray("track_manager", "muzzle_flash_light")]
+transform = Transform3D(2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0)
+script = ExtResource("4_b4isn")
+track_manager = NodePath("")
+muzzle_flash_light = NodePath("")
+
+[node name="MuzzleFlashLight" type="OmniLight3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+transform = Transform3D(-1.09278e-07, 8.71967e-16, 2.5, 8.71967e-16, 2.5, -8.71967e-16, -2.5, 8.71967e-16, -1.09278e-07, -0.0160856, -0.00766373, 0.211237)
+light_color = Color(1, 0.427451, 0.0627451, 1)
+light_energy = 0.0
+light_size = 0.171
+shadow_enabled = true
+distance_fade_enabled = true
+omni_range = 69.333
+
+[node name="BreakFlash" type="MeshInstance3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+transform = Transform3D(-1.22392e-08, -0.14, 0.242487, 8.45763e-17, 0.242487, 0.14, -0.28, 6.11959e-09, -1.05994e-08, -0.0815458, 0.172305, 0)
+cast_shadow = 0
+mesh = SubResource("TextMesh_ua355")
+skeleton = NodePath("../..")
+
+[node name="BreakFlash2" type="MeshInstance3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+transform = Transform3D(2.44784e-08, -0.14, 0.242487, 2.11989e-08, -0.242487, -0.14, 0.28, 3.0598e-08, -1.05994e-08, -0.0815458, -0.177837, 0)
+cast_shadow = 0
+mesh = SubResource("TextMesh_ua355")
+skeleton = NodePath("../..")
+
+[node name="BreakFlash3" type="MeshInstance3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+transform = Transform3D(-2.36101e-09, -0.19799, 0.19799, -0.28, 3.33897e-09, -9.76603e-17, -2.36101e-09, -0.19799, -0.19799, -0.0815458, 0.00429678, -0.150425)
+cast_shadow = 0
+mesh = SubResource("TextMesh_ua355")
+skeleton = NodePath("../..")
+
+[node name="BreakFlash4" type="MeshInstance3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+transform = Transform3D(-8.65441e-09, -0.19799, 0.19799, 0.28, -1.22392e-08, -9.76603e-17, 8.65441e-09, 0.19799, 0.19799, -0.0815458, 0.00429678, 0.20849)
+cast_shadow = 0
+mesh = SubResource("TextMesh_ua355")
+skeleton = NodePath("../..")

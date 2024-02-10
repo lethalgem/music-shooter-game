@@ -541,7 +541,7 @@ script = ExtResource("1_b0yeg")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 ANIMATIONPLAYER = NodePath("AnimationPlayer")
 CROUCH_SHAPECAST = NodePath("ShapeCast3D")
-WEAPON_HOLDER = NodePath("CameraController/Camera3D/WeaponHolder/lowpoly_asval")
+WEAPON_HOLDER = NodePath("CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval")
 WEAPON_TILT_AMOUNT = 0.01
 INVERT_WEAPON_SWAY = true
 CAM_TILT_AMOUNT = 0.1
@@ -569,7 +569,21 @@ update_mode = 1
 [node name="WeaponHolder" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, -1.566, -4.1633e-12)
 
-[node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder" node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("7_j4hku")]
+[node name="lowpoly_asval_controller" type="Node3D" parent="CameraController/Camera3D/WeaponHolder"]
+
+[node name="TrackManager" type="Node" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller" node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
+script = ExtResource("13_7sdke")
+FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
+BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
+SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
+
+[node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/TrackManager"]
+stream = ExtResource("14_o2t3l")
+
+[node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/TrackManager"]
+stream = ExtResource("15_dgpum")
+
+[node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller" node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("7_j4hku")]
 transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.295, 1.065, -0.765)
 script = ExtResource("4_b3v7x")
 target_object = NodePath(".")
@@ -577,20 +591,20 @@ recoil_rotation_x = ExtResource("5_srcb8")
 recoil_rotation_z = ExtResource("5_srcb8")
 recoil_position_z = ExtResource("5_srcb8")
 recoil_amplitude = Vector3(1, 1, 0.2)
-camera_shake = NodePath("../../..")
+camera_shake = NodePath("../../../..")
 camera_shake_amount = 0.02
-track_manager = NodePath("../../../../TrackManager")
+track_manager = NodePath("../TrackManager")
 
-[node name="MuzzleFlashMarker" type="Marker3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval"]
+[node name="MuzzleFlashMarker" type="Marker3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval"]
 transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.55212e-16, -4.15924e-24, 1, -2.42076, 0.427047, 0)
 
-[node name="MuzzleFlash" type="Node3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker" node_paths=PackedStringArray("track_manager", "muzzle_flash_light")]
+[node name="MuzzleFlash" type="Node3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker" node_paths=PackedStringArray("track_manager", "muzzle_flash_light")]
 transform = Transform3D(2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0)
 script = ExtResource("6_6e40e")
-track_manager = NodePath("../../../../../../TrackManager")
+track_manager = NodePath("../../../TrackManager")
 muzzle_flash_light = NodePath("MuzzleFlashLight")
 
-[node name="MuzzleFlashLight" type="OmniLight3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+[node name="MuzzleFlashLight" type="OmniLight3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(-1.09278e-07, 8.71967e-16, 2.5, 8.71967e-16, 2.5, -8.71967e-16, -2.5, 8.71967e-16, -1.09278e-07, -0.0160856, -0.00766373, 0.211237)
 light_color = Color(1, 0.427451, 0.0627451, 1)
 light_energy = 0.0
@@ -599,25 +613,25 @@ shadow_enabled = true
 distance_fade_enabled = true
 omni_range = 69.333
 
-[node name="BreakFlash" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+[node name="BreakFlash" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(-1.22392e-08, -0.14, 0.242487, 8.45763e-17, 0.242487, 0.14, -0.28, 6.11959e-09, -1.05994e-08, -0.0815458, 0.172305, 0)
 cast_shadow = 0
 mesh = SubResource("TextMesh_ua355")
 skeleton = NodePath("../..")
 
-[node name="BreakFlash2" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+[node name="BreakFlash2" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(2.44784e-08, -0.14, 0.242487, 2.11989e-08, -0.242487, -0.14, 0.28, 3.0598e-08, -1.05994e-08, -0.0815458, -0.177837, 0)
 cast_shadow = 0
 mesh = SubResource("TextMesh_ua355")
 skeleton = NodePath("../..")
 
-[node name="BreakFlash3" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+[node name="BreakFlash3" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(-2.36101e-09, -0.19799, 0.19799, -0.28, 3.33897e-09, -9.76603e-17, -2.36101e-09, -0.19799, -0.19799, -0.0815458, 0.00429678, -0.150425)
 cast_shadow = 0
 mesh = SubResource("TextMesh_ua355")
 skeleton = NodePath("../..")
 
-[node name="BreakFlash4" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
+[node name="BreakFlash4" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(-8.65441e-09, -0.19799, 0.19799, 0.28, -1.22392e-08, -9.76603e-17, 8.65441e-09, 0.19799, 0.19799, -0.0815458, 0.00429678, 0.20849)
 cast_shadow = 0
 mesh = SubResource("TextMesh_ua355")
@@ -725,17 +739,5 @@ script = ExtResource("12_4f8xh")
 
 [node name="PronePlayerState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("17_ixpa7")
-
-[node name="TrackManager" type="Node" parent="." node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
-script = ExtResource("13_7sdke")
-FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
-BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
-SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
-
-[node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
-stream = ExtResource("14_o2t3l")
-
-[node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
-stream = ExtResource("15_dgpum")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
