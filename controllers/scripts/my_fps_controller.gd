@@ -130,7 +130,7 @@ func weapon_sway(delta):
 
 	WEAPON_HOLDER.rotation.y = lerp(
 		WEAPON_HOLDER.rotation.y,
-		mouse_input.x * WEAPON_TILT_AMOUNT * (-1 if INVERT_WEAPON_SWAY else 1) + deg_to_rad(-90),
+		mouse_input.x * WEAPON_TILT_AMOUNT * (-1 if INVERT_WEAPON_SWAY else 1),
 		10 * delta
 	)
 

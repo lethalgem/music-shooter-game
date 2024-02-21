@@ -1,24 +1,18 @@
-[gd_scene load_steps=37 format=3 uid="uid://c7widt1lw44j6"]
+[gd_scene load_steps=29 format=3 uid="uid://c7widt1lw44j6"]
 
 [ext_resource type="Script" path="res://controllers/scripts/my_fps_controller.gd" id="1_b0yeg"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="3_8ojud"]
-[ext_resource type="Script" path="res://scripts/recoil_handler.gd" id="4_b3v7x"]
+[ext_resource type="PackedScene" uid="uid://6whpa83cb0jt" path="res://weapons/katana_prototype/katana_prototype_01.glb" id="4_oslap"]
 [ext_resource type="Theme" uid="uid://bafg6ukv5y75k" path="res://ui/theme/debug.tres" id="4_ov56a"]
 [ext_resource type="Script" path="res://scripts/debug.gd" id="5_nco27"]
-[ext_resource type="Curve" uid="uid://cbynyrnvrcxah" path="res://curves/recoil_curve.tres" id="5_srcb8"]
 [ext_resource type="Script" path="res://scripts/camera_shake.gd" id="6_0pynn"]
-[ext_resource type="Script" path="res://scripts/muzzle_flash.gd" id="6_6e40e"]
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="6_40erw"]
-[ext_resource type="PackedScene" uid="uid://chw0fstefrpww" path="res://weapons/lowpoly_asval/lowpoly_asval.glb" id="7_j4hku"]
 [ext_resource type="Script" path="res://controllers/IdlePlayerState.gd" id="7_xlair"]
 [ext_resource type="Script" path="res://controllers/WalkingPlayerState.gd" id="8_ibi1n"]
 [ext_resource type="Script" path="res://controllers/SprintingPlayerState.gd" id="9_ear85"]
 [ext_resource type="Script" path="res://controllers/CrouchingPlayerState.gd" id="10_8nyym"]
 [ext_resource type="Script" path="res://controllers/SlidingPlayerState.gd" id="11_hrvf0"]
 [ext_resource type="Script" path="res://controllers/JumpingPlayerState.gd" id="12_4f8xh"]
-[ext_resource type="Script" path="res://controllers/TrackManager.gd" id="13_7sdke"]
-[ext_resource type="AudioStream" uid="uid://bdhte3qlxe4e" path="res://sounds/songs/Polyphia  40oz (Official Music Video).mp3" id="14_o2t3l"]
-[ext_resource type="AudioStream" uid="uid://dlg2koa1xddr1" path="res://sounds/songs/Polyphia  40oz  Guitar Backing Track-synced.wav" id="15_dgpum"]
 [ext_resource type="Script" path="res://controllers/PronePlayerState.gd" id="17_ixpa7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6y6ct"]
@@ -31,21 +25,6 @@ albedo_color = Color(1, 0.0156863, 1, 1)
 material = SubResource("StandardMaterial3D_tc3nn")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_m4aob"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffcxd"]
-albedo_color = Color(1, 0.439216, 0.160784, 1)
-emission_enabled = true
-emission = Color(0.937255, 0.152941, 0.054902, 1)
-emission_energy_multiplier = 19.1
-subsurf_scatter_strength = 1.0
-refraction_scale = 0.25
-disable_receive_shadows = true
-
-[sub_resource type="TextMesh" id="TextMesh_ua355"]
-material = SubResource("StandardMaterial3D_ffcxd")
-text = "v"
-font_size = 127
-pixel_size = 0.0185
 
 [sub_resource type="Animation" id="Animation_ymvr6"]
 resource_name = "Crouching"
@@ -541,7 +520,7 @@ script = ExtResource("1_b0yeg")
 CAMERA_CONTROLLER = NodePath("CameraController/Camera3D")
 ANIMATIONPLAYER = NodePath("AnimationPlayer")
 CROUCH_SHAPECAST = NodePath("ShapeCast3D")
-WEAPON_HOLDER = NodePath("CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval")
+WEAPON_HOLDER = NodePath("CameraController/Camera3D/WeaponHolder")
 WEAPON_TILT_AMOUNT = 0.01
 INVERT_WEAPON_SWAY = true
 CAM_TILT_AMOUNT = 0.1
@@ -569,73 +548,8 @@ update_mode = 1
 [node name="WeaponHolder" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, -1.566, -4.1633e-12)
 
-[node name="lowpoly_asval_controller" type="Node3D" parent="CameraController/Camera3D/WeaponHolder"]
-
-[node name="TrackManager" type="Node" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller" node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
-script = ExtResource("13_7sdke")
-FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
-BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
-SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
-
-[node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/TrackManager"]
-stream = ExtResource("14_o2t3l")
-
-[node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/TrackManager"]
-stream = ExtResource("15_dgpum")
-
-[node name="lowpoly_asval" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller" node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("7_j4hku")]
-transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.295, 1.065, -0.765)
-script = ExtResource("4_b3v7x")
-target_object = NodePath(".")
-recoil_rotation_x = ExtResource("5_srcb8")
-recoil_rotation_z = ExtResource("5_srcb8")
-recoil_position_z = ExtResource("5_srcb8")
-recoil_amplitude = Vector3(1, 1, 0.2)
-camera_shake = NodePath("../../../..")
-camera_shake_amount = 0.02
-track_manager = NodePath("../TrackManager")
-
-[node name="MuzzleFlashMarker" type="Marker3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval"]
-transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.55212e-16, -4.15924e-24, 1, -2.42076, 0.427047, 0)
-
-[node name="MuzzleFlash" type="Node3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker" node_paths=PackedStringArray("track_manager", "muzzle_flash_light")]
-transform = Transform3D(2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0)
-script = ExtResource("6_6e40e")
-track_manager = NodePath("../../../TrackManager")
-muzzle_flash_light = NodePath("MuzzleFlashLight")
-
-[node name="MuzzleFlashLight" type="OmniLight3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
-transform = Transform3D(-1.09278e-07, 8.71967e-16, 2.5, 8.71967e-16, 2.5, -8.71967e-16, -2.5, 8.71967e-16, -1.09278e-07, -0.0160856, -0.00766373, 0.211237)
-light_color = Color(1, 0.427451, 0.0627451, 1)
-light_energy = 0.0
-light_size = 0.171
-shadow_enabled = true
-distance_fade_enabled = true
-omni_range = 69.333
-
-[node name="BreakFlash" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
-transform = Transform3D(-1.22392e-08, -0.14, 0.242487, 8.45763e-17, 0.242487, 0.14, -0.28, 6.11959e-09, -1.05994e-08, -0.0815458, 0.172305, 0)
-cast_shadow = 0
-mesh = SubResource("TextMesh_ua355")
-skeleton = NodePath("../..")
-
-[node name="BreakFlash2" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
-transform = Transform3D(2.44784e-08, -0.14, 0.242487, 2.11989e-08, -0.242487, -0.14, 0.28, 3.0598e-08, -1.05994e-08, -0.0815458, -0.177837, 0)
-cast_shadow = 0
-mesh = SubResource("TextMesh_ua355")
-skeleton = NodePath("../..")
-
-[node name="BreakFlash3" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
-transform = Transform3D(-2.36101e-09, -0.19799, 0.19799, -0.28, 3.33897e-09, -9.76603e-17, -2.36101e-09, -0.19799, -0.19799, -0.0815458, 0.00429678, -0.150425)
-cast_shadow = 0
-mesh = SubResource("TextMesh_ua355")
-skeleton = NodePath("../..")
-
-[node name="BreakFlash4" type="MeshInstance3D" parent="CameraController/Camera3D/WeaponHolder/lowpoly_asval_controller/lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
-transform = Transform3D(-8.65441e-09, -0.19799, 0.19799, 0.28, -1.22392e-08, -9.76603e-17, 8.65441e-09, 0.19799, 0.19799, -0.0815458, 0.00429678, 0.20849)
-cast_shadow = 0
-mesh = SubResource("TextMesh_ua355")
-skeleton = NodePath("../..")
+[node name="katana_prototype" parent="CameraController/Camera3D/WeaponHolder" instance=ExtResource("4_oslap")]
+transform = Transform3D(-0.290868, 0.0570796, -0.68894, -0.646659, 0.241776, 0.293048, 0.244395, 0.707663, -0.0445517, 0.3, 1.02, -1.545)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

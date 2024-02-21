@@ -27,8 +27,8 @@ pixel_size = 0.0185
 
 [node name="TrackManager" type="Node" parent="." node_paths=PackedStringArray("FRONT_TRACK_STREAM_PLAYER", "BACKING_TRACK_STREAM_PLAYER")]
 script = ExtResource("1_j43ns")
-FRONT_TRACK_STREAM_PLAYER = NodePath("")
-BACKING_TRACK_STREAM_PLAYER = NodePath("")
+FRONT_TRACK_STREAM_PLAYER = NodePath("FrontTrackStreamPlayer")
+BACKING_TRACK_STREAM_PLAYER = NodePath("BackingTrackStreamPlayer")
 SHOOT_TIMES_SOURCE = "res://sounds/songs/polyphia_40oz_note_times.txt"
 
 [node name="FrontTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
@@ -37,17 +37,15 @@ stream = ExtResource("2_3jgog")
 [node name="BackingTrackStreamPlayer" type="AudioStreamPlayer" parent="TrackManager"]
 stream = ExtResource("3_a4kdl")
 
-[node name="lowpoly_asval" parent="." node_paths=PackedStringArray("target_object", "camera_shake", "track_manager") instance=ExtResource("1_khnsb")]
+[node name="lowpoly_asval" parent="." node_paths=PackedStringArray("track_manager") instance=ExtResource("1_khnsb")]
 transform = Transform3D(4.76995e-09, -1.39515e-16, -0.4, 1.39515e-16, 0.4, -1.39515e-16, 0.4, -1.39515e-16, 4.76995e-09, 0.295, 1.065, -0.765)
 script = ExtResource("2_wyls2")
-target_object = NodePath("")
 recoil_rotation_x = ExtResource("3_wo71r")
 recoil_rotation_z = ExtResource("3_wo71r")
 recoil_position_z = ExtResource("3_wo71r")
 recoil_amplitude = Vector3(1, 1, 0.2)
-camera_shake = NodePath("")
 camera_shake_amount = 0.02
-track_manager = NodePath("")
+track_manager = NodePath("../TrackManager")
 
 [node name="MuzzleFlashMarker" type="Marker3D" parent="lowpoly_asval"]
 transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.55212e-16, -4.15924e-24, 1, -2.42076, 0.427047, 0)
@@ -55,8 +53,8 @@ transform = Transform3D(1, 0, -4.44089e-16, 1.06845e-23, 1, -1.48438e-23, -3.552
 [node name="MuzzleFlash" type="Node3D" parent="lowpoly_asval/MuzzleFlashMarker" node_paths=PackedStringArray("track_manager", "muzzle_flash_light")]
 transform = Transform3D(2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0, 2.08165e-12, 0, 0, 0)
 script = ExtResource("4_b4isn")
-track_manager = NodePath("")
-muzzle_flash_light = NodePath("")
+track_manager = NodePath("../../../TrackManager")
+muzzle_flash_light = NodePath("MuzzleFlashLight")
 
 [node name="MuzzleFlashLight" type="OmniLight3D" parent="lowpoly_asval/MuzzleFlashMarker/MuzzleFlash"]
 transform = Transform3D(-1.09278e-07, 8.71967e-16, 2.5, 8.71967e-16, 2.5, -8.71967e-16, -2.5, 8.71967e-16, -1.09278e-07, -0.0160856, -0.00766373, 0.211237)
